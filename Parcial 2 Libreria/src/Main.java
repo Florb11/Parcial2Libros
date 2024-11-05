@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.util.LinkedList;
 
 public class Main {
     public static void main(String[] args) {
@@ -7,6 +6,7 @@ public class Main {
         Cliente cliente1 = new Cliente("Juan", "1234",libreria);
         Empleado empleado1 = new Empleado("Lucia", "abcd", "Empleado de ventas",libreria);
         Estadistica estadistica = new Estadistica(libreria);
+        ImageIcon Icon = new ImageIcon("src/img/menu.png");
 
 
         String[] menu = { "Iniciar sesion como Empleado", "Iniciar sesion como Cliente","Mostrar estadisticas", "Salir" };
@@ -17,7 +17,7 @@ public class Main {
                     "Menu Usuarios",
                    0,
                     0,
-                    null,
+                    Icon,
                     menu,
                     menu[0]);
 
@@ -27,7 +27,8 @@ public class Main {
                     break;
 
                 case 1:
-                    cliente1.iniciarSesion("fdfsd","1234");
+                    cliente1.iniciarSesion("Juan","1234");
+                    break;
                 case 2:
                     estadistica.mostrarEstadisticas();
                     break;

@@ -1,5 +1,4 @@
 import javax.swing.*;
-
 public class Empleado extends Usuario {
     private String cargo;
     private Libreria libreria;
@@ -35,11 +34,12 @@ public class Empleado extends Usuario {
     }
 
     @Override
-    public boolean iniciarSesion(String nombre, String contraseña) {
-        if (!this.getNombre().equals(nombre) || !this.getContrasenia().equals(contraseña)) {
+    public boolean iniciarSesion(String nombre, String contrasenia) {
+        if (!this.getNombre().equals(nombre) || !this.getContrasenia().equals(contrasenia)) {
             JOptionPane.showMessageDialog(null, "Usuario invalido, vuelva a intentar");
             return false;
         }
+        ImageIcon Icon = new ImageIcon("src/img/empleado.png");
 
         String[] opciones = {"Agregar libro", "Eliminar libro", "Buscar libro", "Realizar venta", "Salir"};
         int opcion;
@@ -50,7 +50,7 @@ public class Empleado extends Usuario {
                     "Menu de Empleado",
                     0,
                     0,
-                    null,
+                    Icon,
                     opciones,
                     opciones[0]);
 
@@ -80,7 +80,7 @@ public class Empleado extends Usuario {
         String titulo = JOptionPane.showInputDialog("Ingrese el titulo del libro a agregar");
         String autor = JOptionPane.showInputDialog("Ingrese el autor del libro");
         int cantidad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad a agregar"));
-        Libro nuevo = new Libro(titulo, autor, 100.0, cantidad);
+        Libro nuevo = new Libro(titulo, autor, 100.0, cantidad); // le dejo el 100 para probar acordarme
 
         for (Libro item : libreria.getInventario()) {
             if (item.getTitulo().equals(nuevo.getTitulo())) {
@@ -90,26 +90,26 @@ public class Empleado extends Usuario {
             }
         }
         libreria.getInventario().add(nuevo);
-        JOptionPane.showMessageDialog(null, "Libro agregado con éxito: " + titulo);
+        JOptionPane.showMessageDialog(null, "Libro agregado con exito: " + titulo);
     }
 
     public void eliminarLibro() {
-        String titulo = validarNombre("Ingrese el título del libro a eliminar");
+        String titulo = validarNombre("Ingrese el titulo del libro a eliminar");
 
         for (Libro item : libreria.getInventario()) {
             if (item.getTitulo().equalsIgnoreCase(titulo)) {
                 libreria.getInventario().remove(item);
-                JOptionPane.showMessageDialog(null, "Libro eliminado exitosamente: " + titulo);
+                JOptionPane.showMessageDialog(null, "Libro eliminado: " + titulo);
                 return;
             }
         }
-        JOptionPane.showMessageDialog(null, "No se encontró el libro: " + titulo);
+        JOptionPane.showMessageDialog(null, "No se encontro el libro: " + titulo);
     }
 
     public Libro buscarLibro() {
-        String criterio = validarNombre("Ingrese el título del libro a buscar");
+        String criterio = validarNombre("Ingrese el titulo del libro a buscar");
         if (libreria.getInventario().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "La lista de libros está vacía.");
+            JOptionPane.showMessageDialog(null, "La lista de libros esta vacia.");
             return null;
         }
         for (Libro libro : libreria.getInventario()) {
@@ -118,12 +118,12 @@ public class Empleado extends Usuario {
                 return libro;
             }
         }
-        JOptionPane.showMessageDialog(null, "No se encontró el libro con el título: " + criterio);
+        JOptionPane.showMessageDialog(null, "No se encontro el libro con el titulo: " + criterio);
         return null;
     }
 
     public void realizarVenta() {
-        String titulo = validarNombre("Ingrese el título del libro a vender");
+        String titulo = validarNombre("Ingrese el titulo del libro a vender");
         int cantidad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad a vender"));
 
         Libro libroEncontrado = buscarLibro();
@@ -131,20 +131,19 @@ public class Empleado extends Usuario {
         if (libroEncontrado != null) {
             if (libroEncontrado.getStock() >= cantidad) {
                 libroEncontrado.setStock(libroEncontrado.getStock() - cantidad);
-                // Aquí se puede agregar la lógica para registrar la venta en la lista de ventas
-                JOptionPane.showMessageDialog(null, "Venta realizada con éxito!\n" +
-                        "Título: " + libroEncontrado.getTitulo() + "\n" +
-                        "Cantidad vendida: " + cantidad + "\n" +
-                        "Nuevo stock: " + libroEncontrado.getStock());
+                double precioTotal = libroEncontrado.getPrecio() * cantidad;
+                Venta venta = new Venta(libroEncontrado.getTitulo(), cantidad, precioTotal);
+                libreria.getVentas().add(venta);
+
+                JOptionPane.showMessageDialog(null, "Venta realizada con exito!!\n" +
+                        "Título: " + libroEncontrado.getTitulo() + "\n" + "Cantidad vendida: " + cantidad + "\n" + "Nuevo stock: " + libroEncontrado.getStock() + "\n" + "Precio total: " + precioTotal);
             } else {
-                JOptionPane.showMessageDialog(null, "No hay suficiente stock para realizar la venta\n" +
-                        "Stock disponible: " + libroEncontrado.getStock());
+                JOptionPane.showMessageDialog(null, "No hay suficiente stock para realizar la venta\n" + "Stock disponible: " + libroEncontrado.getStock());
             }
         } else {
-            JOptionPane.showMessageDialog(null, "El libro no se encontró");
+            JOptionPane.showMessageDialog(null, "El libro no se encontro");
         }
     }
-
     public String validarNombre(String mensaje) {
         boolean flag;
         String validar;
@@ -157,7 +156,7 @@ public class Empleado extends Usuario {
             }
             for (int i = 0; i < validar.length(); i++) {
                 if (!Character.isAlphabetic(validar.charAt(i))) {
-                    JOptionPane.showMessageDialog(null, "Ingresa el nombre, sin números");
+                    JOptionPane.showMessageDialog(null, "Ingresa el nombre, sin numeros");
                     flag = false;
                     break;
                 }

@@ -9,12 +9,10 @@ public class Cliente extends Usuario {
 
     public Cliente(String nombre, String contrasenia, Libreria libreria) {
         super(nombre, contrasenia);
-        this.cantidadLibrosComprados = 0;
+        this.cantidadLibrosComprados = 0; // lo inicio en 0 porque no compro todavia
         this.libreria = libreria;
     }
     //get y set
-
-
     public Libreria getLibreria() {
         return libreria;
     }
@@ -40,11 +38,12 @@ public class Cliente extends Usuario {
     }
 
     @Override
-    public boolean iniciarSesion(String nombre, String contraseña) {
-        if (!this.getNombre().equals(nombre) || !this.getContrasenia().equals(contraseña)) {
+    public boolean iniciarSesion(String nombre, String contrasenia) {
+        if (!this.getNombre().equals(nombre) || !this.getContrasenia().equals(contrasenia)) {
             JOptionPane.showMessageDialog(null, "Usuario invalido, vuelva a intentar");
             return false;
         }
+        ImageIcon Icon = new ImageIcon("src/img/cliente.png");
 
         String[] opciones = {"Ver libros", "Comprar libro", "Ver mis compras", "Salir"};
         int opcion;
@@ -52,10 +51,10 @@ public class Cliente extends Usuario {
         do {
             opcion = JOptionPane.showOptionDialog(null,
                     "Seleccione una opcion:",
-                    "Menú de Cliente",
+                    "Menu de Cliente",
                     0,
                     0,
-                    null,
+                    Icon,
                     opciones,
                     opciones[0]);
 
@@ -70,10 +69,8 @@ public class Cliente extends Usuario {
                     verLibrosComprados();
                     break;
                 case 3:
-                    JOptionPane.showMessageDialog(null, "Saliendo del sistema...");
+                    JOptionPane.showMessageDialog(null, "Saliendo...");
                     break;
-                default:
-                    JOptionPane.showMessageDialog(null, "Opción no válida. Intente nuevamente.");
             }
 
         } while (opcion != 3);
@@ -82,18 +79,19 @@ public class Cliente extends Usuario {
     }
     public void verLibrosDisponibles(Libreria libreria) {
         if (libreria.getInventario().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No hay libros disponibles en la librería.");
+            JOptionPane.showMessageDialog(null, "No hay libros disponibles");
             return;
         }
 
         String mensaje = "Libros disponibles:\n";
         for (Libro libro : libreria.getInventario()) {
-            mensaje += libro.toString() + "\n";
+            mensaje += libro + "\n";
         }
         JOptionPane.showMessageDialog(null, mensaje);
     }
+
     public void comprarLibro(Libreria libreria) {
-        String titulo = JOptionPane.showInputDialog("Ingrese el título del libro que desea comprar");
+        String titulo = JOptionPane.showInputDialog("Ingrese el titulo del libro que desea comprar");
         Libro libroEncontrado = null;
 
         for (Libro libro : libreria.getInventario()) {
@@ -107,24 +105,26 @@ public class Cliente extends Usuario {
             int cantidad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad que desea comprar"));
             if (libroEncontrado.getStock() >= cantidad) {
                 libroEncontrado.setStock(libroEncontrado.getStock() - cantidad);
-                cantidadLibrosComprados += cantidad; // Incrementamos el contador
-                JOptionPane.showMessageDialog(null, "Compra realizada con éxito:\n" +
-                        "Título: " + libroEncontrado.getTitulo() + "\n" +
-                        "Cantidad comprada: " + cantidad);
+                this.cantidadLibrosComprados += cantidad;
+
+                Venta nuevaVenta = new Venta(libroEncontrado.getTitulo(), cantidad, libroEncontrado.getPrecio() * cantidad);
+                libreria.getVentas().add(nuevaVenta);
+
+                JOptionPane.showMessageDialog(null, "Compra realizada con exito:\n" + "Titulo: " + libroEncontrado.getTitulo() + "\n" + "Cantidad comprada: " + cantidad);
             } else {
-                JOptionPane.showMessageDialog(null, "No hay suficiente stock para realizar la compra.\n" +
+                JOptionPane.showMessageDialog(null, "No hay suficiente stock\n" +
                         "Stock disponible: " + libroEncontrado.getStock());
             }
         } else {
-            JOptionPane.showMessageDialog(null, "No se encontró el libro con el título: " + titulo);
+            JOptionPane.showMessageDialog(null, "No se encontro el libro con el título: " + titulo);
         }
     }
 
     public void verLibrosComprados() {
-        if (cantidadLibrosComprados == 0) {
-            JOptionPane.showMessageDialog(null, "No ha comprado ningún libro todavía.");
+        if (this.cantidadLibrosComprados == 0) {
+            JOptionPane.showMessageDialog(null, "No ha comprado ningun libro todavia.");
         } else {
-            JOptionPane.showMessageDialog(null, "Ha comprado un total de " + cantidadLibrosComprados + " libros.");
+            JOptionPane.showMessageDialog(null, "Ha comprado un total de " + this.cantidadLibrosComprados + " libros");
         }
     }
 }

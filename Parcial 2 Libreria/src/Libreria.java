@@ -4,13 +4,13 @@ import java.util.LinkedList;
 public class Libreria {
     //
     private String nombre;
-    private LinkedList<Libro> inventario = new LinkedList<Libro>();
-    private LinkedList<Venta> ventas = new LinkedList<Venta>();
+    private LinkedList<Libro> inventario;
+    private LinkedList<Venta> ventas;
 
     public Libreria(String nombre) {
         this.nombre = nombre;
-        this.inventario = inventario;
-        this.ventas = ventas;
+        this.inventario = new LinkedList<Libro>(); // el tema de iniciar las listas me confundeeee
+        this.ventas = ventas = new LinkedList<Venta>();
     }
 
     public String getNombre() {
@@ -45,5 +45,6 @@ public class Libreria {
                 ", ventas=" + ventas +
                 '}';
     }
+
 
 }

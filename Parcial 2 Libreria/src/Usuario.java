@@ -35,8 +35,8 @@ public class Usuario {
                 ", contrasenia='" + contrasenia + '\'' +
                 '}';
     }
-    public boolean iniciarSesion(String mail,String contraseña) {
-        if (this.nombre.equals(mail) && this.contrasenia.equals(contraseña)) {
+    public boolean iniciarSesion(String mail,String contrasenia) {
+        if (this.nombre.equals(mail) && this.contrasenia.equals(contrasenia)) {
             return true;
         } else {
             return false;

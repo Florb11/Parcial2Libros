@@ -31,8 +31,8 @@ public class Estadistica {
         return totalInventario;
     }
     public void mostrarEstadisticas() {
-        JOptionPane.showMessageDialog(null, "Total de Ventas: " + calcularTotalVentas());
-        JOptionPane.showMessageDialog(null, "Cantidad Total de Libros Vendidos: " + calcularCantidadLibrosVendidos());
-        JOptionPane.showMessageDialog(null, "Total de Libros en Inventario: " + calcularInventarioTotal());
+        JOptionPane.showMessageDialog(null, "Total de ventas: " + calcularTotalVentas());
+        JOptionPane.showMessageDialog(null, "Cantidad Total de libros vendidos: " + calcularCantidadLibrosVendidos());
+        JOptionPane.showMessageDialog(null, "Total de Libros en inventario: " + calcularInventarioTotal());
     }
 }
