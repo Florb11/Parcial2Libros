@@ -4,7 +4,7 @@ public class Main {
     public static void main(String[] args) {
         Libreria libreria = new Libreria("pepe");
         Cliente cliente1 = new Cliente("Juan", "1234",libreria);
-        Empleado empleado1 = new Empleado("Lucia", "abcd", "Empleado de ventas",libreria);
+        Empleado empleado1 = new Empleado("Lucia", "abcd", "Empleado mutifuncion",libreria);
         Estadistica estadistica = new Estadistica(libreria);
         ImageIcon Icon = new ImageIcon("src/img/menu.png");
 
@@ -33,7 +33,7 @@ public class Main {
                     estadistica.mostrarEstadisticas();
                     break;
                 case 3:
-                    JOptionPane.showMessageDialog(null, "Saliendo del sistema...");
+                    JOptionPane.showMessageDialog(null, "Saliendo.....");
                     break;
             }
         } while (opcion != 3);

@@ -79,7 +79,7 @@ public class Empleado extends Usuario {
     public void agregarLibro() {
         String titulo = JOptionPane.showInputDialog("Ingrese el titulo del libro a agregar");
         String autor = JOptionPane.showInputDialog("Ingrese el autor del libro");
-        int cantidad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad a agregar"));
+        int cantidad = validarNumeros("Ingrese la cantidad a agregar");
         Libro nuevo = new Libro(titulo, autor, 100.0, cantidad); // le dejo el 100 para probar acordarme
 
         for (Libro item : libreria.getInventario()) {
@@ -164,4 +164,25 @@ public class Empleado extends Usuario {
         } while (!flag);
         return validar;
     }
+    public int validarNumeros(String mensaje) {
+        boolean flag;
+        String valida;
+        do {
+            flag = true;
+            valida = JOptionPane.showInputDialog(mensaje);
+            while (valida.isEmpty()) {
+                valida = JOptionPane.showInputDialog("Error: " + mensaje);
+            }
+            for (int i = 0; i < valida.length(); i++) {
+                if (!Character.isDigit(valida.charAt(i))) {
+                    JOptionPane.showMessageDialog(null, "Solo se permiten numeros.");
+                    flag = false;
+                    break;
+                }
+            }
+        } while (!flag);
+
+        return Integer.parseInt(valida);
+    }
 }
+

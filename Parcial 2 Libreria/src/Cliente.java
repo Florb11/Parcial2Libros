@@ -12,6 +12,7 @@ public class Cliente extends Usuario {
         this.cantidadLibrosComprados = 0; // lo inicio en 0 porque no compro todavia
         this.libreria = libreria;
     }
+
     //get y set
     public Libreria getLibreria() {
         return libreria;
@@ -77,6 +78,7 @@ public class Cliente extends Usuario {
 
         return true;
     }
+
     public void verLibrosDisponibles(Libreria libreria) {
         if (libreria.getInventario().isEmpty()) {
             JOptionPane.showMessageDialog(null, "No hay libros disponibles");
@@ -91,7 +93,7 @@ public class Cliente extends Usuario {
     }
 
     public void comprarLibro(Libreria libreria) {
-        String titulo = JOptionPane.showInputDialog("Ingrese el titulo del libro que desea comprar");
+        String titulo = validarCaracteres("Ingrese el titulo del libro que desea comprar");
         Libro libroEncontrado = null;
 
         for (Libro libro : libreria.getInventario()) {
@@ -102,7 +104,7 @@ public class Cliente extends Usuario {
         }
 
         if (libroEncontrado != null) {
-            int cantidad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad que desea comprar"));
+            int cantidad = validarNumeros(JOptionPane.showInputDialog("Ingrese la cantidad que desea comprar"));
             if (libroEncontrado.getStock() >= cantidad) {
                 libroEncontrado.setStock(libroEncontrado.getStock() - cantidad);
                 this.cantidadLibrosComprados += cantidad;
@@ -127,7 +129,35 @@ public class Cliente extends Usuario {
             JOptionPane.showMessageDialog(null, "Ha comprado un total de " + this.cantidadLibrosComprados + " libros");
         }
     }
-}
 
+    public String validarCaracteres(String mensaje) {
+        String palabra = "";
+        while (palabra.equals("")) {
+            palabra = JOptionPane.showInputDialog(mensaje);
+        }
+        return palabra;
+    }
+
+    public int validarNumeros(String mensaje) {
+        boolean flag;
+        String valida;
+        do {
+            flag = true;
+            valida = JOptionPane.showInputDialog(mensaje);
+            while (valida.isEmpty()) {
+                valida = JOptionPane.showInputDialog("Error: " + mensaje);
+            }
+            for (int i = 0; i < valida.length(); i++) {
+                if (!Character.isDigit(valida.charAt(i))) {
+                    JOptionPane.showMessageDialog(null, "Solo se permiten numeros.");
+                    flag = false;
+                    break;
+                }
+            }
+        } while (!flag);
+
+        return Integer.parseInt(valida);
+    }
+}
 
 

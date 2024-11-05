@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.util.LinkedList;
 
 public class Libreria {
@@ -9,7 +8,7 @@ public class Libreria {
 
     public Libreria(String nombre) {
         this.nombre = nombre;
-        this.inventario = new LinkedList<Libro>(); // el tema de iniciar las listas me confundeeee
+        this.inventario = new LinkedList<Libro>();
         this.ventas = ventas = new LinkedList<Venta>();
     }
 
